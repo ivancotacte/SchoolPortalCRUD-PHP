@@ -151,6 +151,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   Submit
                 </button>
               </div>
+              <div class="input-group mb-2">
+                <button type="button" onclick="window.location.href = 'dashboard.php';" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;">
+                  Back
+                </button>
+              </div>
             </form>
         </div>
     </div>
