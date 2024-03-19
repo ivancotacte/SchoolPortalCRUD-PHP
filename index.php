@@ -20,15 +20,14 @@
             $row = mysqli_fetch_assoc($result);
 
             if($row['user_role'] == 'admin'){
-                header("Location: admin.php");
-                die();
+                $_SESSION['ADMIN_EMAIL'] = $row['email_address'];
+                
+                header("Location: admin-dashboard.php");
             } else if ($row['user_role'] == 'student'){
                 $_SESSION['SESSION_EMAIL'] = $row['email_address'];
                 $_SESSION['SESSION_ID'] = $row['id'];
-                $_SESSION['user_id'] = $row['id'];
 
                 header("Location: dashboard.php");
-                die();
             } 
 
         } else {
