@@ -10,7 +10,7 @@ if(isset($_POST['submit'])){
     $suffix = mysqli_real_escape_string($conn, $_POST['suffix']);
     $campus = mysqli_real_escape_string($conn, $_POST['campus']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = mysqli_real_escape_string($conn, md5($_POST['password']));
+    $password = mysqli_real_escape_string($conn, ($_POST['password']));
 
     $image = $_FILES['image']['name'];
     $image_size = $_FILES['image']['size'];
