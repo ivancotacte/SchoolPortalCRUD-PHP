@@ -72,6 +72,11 @@
             <p>Campus: <span><?php echo $_SESSION['campus']; ?></span></p>
             <p>Email Address: <span><?php echo $_SESSION['email_address']; ?></span></p>
             <p>Role: <span><?php echo $_SESSION['user_role']; ?></span></p>
+
+            <div class="mt-3">
+                <button type="button" onclick="window.location.href = 'edit_profile.php';" class="btn btn-primary me-2 w-50" > Edit Profile </button>
+                <button type="button" onclick="window.location.href = 'logout.php';" class="btn btn-secondary w-45"> LogOut </button>
+            </div>
         </div>
     </div>
 </div>
