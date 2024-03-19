@@ -1,5 +1,7 @@
+
 <?php
     session_start();
+    
     if (!isset($_SESSION['SESSION_EMAIL'])) {
         header("Location: index.php");
         die();
@@ -32,12 +34,33 @@
     <link rel="stylesheet" href="css/style.css">
     <title> Dashboard </title>
 </head>
+<style>
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+    }
+</style>
 <body>
 
 <div class="container d-flex justify-content-center align-items-center">
     <div class="row border rounded-2 p-3 bg-white shadow box-area">
         <div class="col-md-6 rounded-2 d-flex justify-content-center align-items-center flex-column">
-            <h1 class="text-center"> Welcome to ICCT Portal </h1>
+            <?php
+                $select = mysqli_query($conn, "SELECT * FROM `tb_account` WHERE id = '{$_SESSION['SESSION_ID']}'") or die('query failed');
+                if(mysqli_num_rows($select) > 0){
+                    $fetch = mysqli_fetch_assoc($select);
+                }
+                if($fetch['image'] == ''){
+                    echo '<div class="input-group mb-2 justify-content-center align-items-center">';
+                    echo '<img src="images/avatar/default-avatar.png" alt="Profile Picture" class="profile-picture" >';
+                    echo '</div>';
+                }else{
+                    echo '<div class="input-group mb-2 justify-content-center align-items-center">';
+                    echo '<img src="images/avatar/uploaded_img/'.$fetch['image'].'" alt="Profile Picture" class="profile-picture">';
+                    echo '</div>';
+                }
+            ?>
         </div>
         <div class="col-md-6 right-box">
             <h3> Personal Information </h3>
