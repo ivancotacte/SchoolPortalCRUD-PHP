@@ -25,6 +25,7 @@
             } else if ($row['user_role'] == 'student'){
                 $_SESSION['SESSION_EMAIL'] = $row['email_address'];
                 $_SESSION['SESSION_ID'] = $row['id'];
+                $_SESSION['user_id'] = $row['id'];
 
                 header("Location: dashboard.php");
                 die();
@@ -69,7 +70,7 @@
       <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box"
         style="background: #030067">
         <div class="featured-image mb-3">
-          <img src="image/icct_logo.png" class="img-fluid" />
+          <img src="images/icct_logo.png" class="img-fluid" />
         </div>
       </div>
       <div class="col-md-6 right-box">
@@ -99,12 +100,12 @@
           </form>
           <div class="input-group mb-2">
             <button class="btn btn-lg btn-light w-100 fs-6 ">
-              <img src="image/google_logo.png" style="width: 20px" class="me-2" /><small>Sign In with Google</small>
+              <img src="images/google_logo.png" style="width: 20px" class="me-2" /><small>Sign In with Google</small>
             </button>
           </div>
           <div class="input-group mb-2">
             <button class="btn btn-lg btn-light w-100 fs-6 ">
-              <img src="image/microsoft_logo.png" style="width: 20px" class="me-2" /><small>Sign In with Google</small>
+              <img src="images/microsoft_logo.png" style="width: 20px" class="me-2" /><small>Sign In with Google</small>
             </button>
           </div>
         </div>
