@@ -12,20 +12,30 @@ if(isset($_POST['submit'])){
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, md5($_POST['password']));
 
+    $image = $_FILES['image']['name'];
+    $image_size = $_FILES['image']['size'];
+    $image_tmp_name = $_FILES['image']['tmp_name'];
+    $image_folder = 'images/avatar/uploaded_img/'.$image;
+
     $select = "SELECT * FROM tb_account WHERE email_address='{$email}'";
     $result = mysqli_query($conn, $select);
 
     if(mysqli_num_rows($result) > 0){
-        $msg = "<div class='alert alert-danger'>Email already exists.</div>";
+      $msg = "<div class='alert alert-danger'>Email already exists.</div>";
     } else {
-        $sql = "INSERT INTO tb_account (first_name, middle_name, last_name, suffix_name, campus, email_address, password) VALUES ('{$firstName}', '{$middleName}', '{$lastName}', '{$suffix}', '{$campus}', '{$email}', '{$password}')";
+      if ($image_size > 2000000) {
+        $msg = "<div class='alert alert-danger'>Image size must be less than 2mb.</div>";
+      } else {
+        move_uploaded_file($image_tmp_name, $image_folder);
+        $sql = "INSERT INTO tb_account (first_name, middle_name, last_name, suffix_name, campus, email_address, password, image) VALUES ('{$firstName}', '{$middleName}', '{$lastName}', '{$suffix}', '{$campus}', '{$email}', '{$password}' , '$image')";
         $result = mysqli_query($conn, $sql);
-
+  
         if($result){
-            $msg = "<div class='alert alert-success'>Account successfully created.</div>";
+          $msg = "<div class='alert alert-success'>Account successfully created.</div>";
         } else {
-            $msg = "<div class='alert alert-danger'>Failed to create account.</div>";
+          $msg = "<div class='alert alert-danger'>Failed to create account.</div>";
         }
+      }
     }
 }
 
@@ -74,7 +84,11 @@ if(isset($_POST['submit'])){
           </div>
           <div>
             <?php echo $msg; ?>
-            <form action="" method="POST">
+            <form action="" method="post" enctype="multipart/form-data">
+              <label class="form-label">Profile Picture:</label>
+              <div class="input-group mb-2">
+                <input type="file" name="image" class="box" class="form-control bg-light fs-6" accept="image/jpg, image/jpeg, image/png">
+              </div>
               <label class="form-label">First Name:</label>
               <div class="input-group mb-2">
                 <input type="text" name="firstName" class="form-control bg-light fs-6" placeholder="Juan" />
