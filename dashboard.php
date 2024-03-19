@@ -45,7 +45,7 @@
 
 <div class="container d-flex justify-content-center align-items-center">
     <div class="row border rounded-2 p-3 bg-white shadow box-area">
-        <div class="col-md-6 rounded-2 d-flex justify-content-center align-items-center flex-column">
+        <div class="col-md-4 rounded-2 d-flex justify-content-center align-items-center flex-column">
             <?php
                 $select = mysqli_query($conn, "SELECT * FROM `tb_account` WHERE id = '{$_SESSION['SESSION_ID']}'") or die('query failed');
                 if(mysqli_num_rows($select) > 0){
@@ -62,7 +62,7 @@
                 }
             ?>
         </div>
-        <div class="col-md-6 right-box">
+        <div class="col-md-8 right-box">
             <h3> Personal Information </h3>
             <p>ID: <span><?php echo $_SESSION['SESSION_ID']; ?></span></p>
             <p>First Name: <span><?php echo $_SESSION['first_name']; ?></span></p>
