@@ -69,9 +69,10 @@ if(isset($_POST['submit'])){
     </div>
   </div>
 </nav>
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="row border rounded-4 p-3 bg-white shadow box-area">
-      <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style="background: #030067">
+<div class="container d-flex justify-content-center align-items-center"> 
+    <div class="row border rounded-2 p-3 bg-white shadow box-area">
+      <div class="col-md-6 rounded-2 d-flex justify-content-center align-items-center flex-column left-box"
+        style="background: #030067">
         <div class="featured-image mb-3">
           <img src="images/icct_logo.png" class="img-fluid" />
         </div>
@@ -87,7 +88,7 @@ if(isset($_POST['submit'])){
             <form action="" method="post" enctype="multipart/form-data">
               <label class="form-label">Profile Picture:</label>
               <div class="input-group mb-2">
-                <input type="file" name="image" class="box" class="form-control bg-light fs-6" accept="image/jpg, image/jpeg, image/png">
+                <input type="file" name="image" class="form-control bg-light fs-6" accept="image/jpg, image/jpeg, image/png" />
               </div>
               <label class="form-label">First Name:</label>
               <div class="input-group mb-2">
