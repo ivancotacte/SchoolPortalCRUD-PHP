@@ -1,6 +1,6 @@
 <?php
-
 include 'config/connect.php';
+
 $msg = "";
 
 if(isset($_POST['submit'])){
@@ -21,24 +21,23 @@ if(isset($_POST['submit'])){
     $result = mysqli_query($conn, $select);
 
     if(mysqli_num_rows($result) > 0){
-      $msg = "<div class='alert alert-danger'>Email already exists.</div>";
+        $msg = "<div class='alert alert-danger'>Email already exists.</div>";
     } else {
-      if ($image_size > 2000000) {
-        $msg = "<div class='alert alert-danger'>Image size must be less than 2mb.</div>";
-      } else {
-        move_uploaded_file($image_tmp_name, $image_folder);
-        $sql = "INSERT INTO tb_account (first_name, middle_name, last_name, suffix_name, campus, email_address, password, image) VALUES ('{$firstName}', '{$middleName}', '{$lastName}', '{$suffix}', '{$campus}', '{$email}', '{$password}' , '$image')";
-        $result = mysqli_query($conn, $sql);
-  
-        if($result){
-          $msg = "<div class='alert alert-success'>Account successfully created.</div>";
+        if ($image_size > 2000000) {
+            $msg = "<div class='alert alert-danger'>Image size must be less than 2mb.</div>";
         } else {
-          $msg = "<div class='alert alert-danger'>Failed to create account.</div>";
+            move_uploaded_file($image_tmp_name, $image_folder);
+            $sql = "INSERT INTO tb_account (first_name, middle_name, last_name, suffix_name, campus, email_address, password, image) VALUES ('{$firstName}', '{$middleName}', '{$lastName}', '{$suffix}', '{$campus}', '{$email}', '{$password}' , '$image')";
+            $result = mysqli_query($conn, $sql);
+
+            if($result){
+                $msg = "<div class='alert alert-success'>Account successfully created.</div>";
+            } else {
+                $msg = "<div class='alert alert-danger'>Failed to create account.</div>";
+            }
         }
-      }
     }
 }
-
 ?>
 
 <!DOCTYPE html>
