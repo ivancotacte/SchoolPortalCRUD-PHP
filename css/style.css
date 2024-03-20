@@ -4,7 +4,7 @@
 body {
   font-family: 'Poppins', sans-serif;
   padding: 20px;
-  background: url('../img/icct_backgroud.jpg') no-repeat center center fixed;
+  background: url('../images/icct_backgroud.jpg') no-repeat center center fixed;
   background-size: cover;
 }
 .navbar {
