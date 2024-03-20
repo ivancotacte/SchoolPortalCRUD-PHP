@@ -94,14 +94,17 @@ if (isset($_POST['submit'])) {
                         </div>
                     </form>
                     <div class="input-group mb-2">
-                        <button class="btn btn-lg btn-light w-100 fs-6 ">
+                        <button class="btn btn-light w-100 fs-6 ">
                             <img src="images/google_logo.png" style="width: 20px" class="me-2" /><small>Sign In with Google</small>
                         </button>
                     </div>
-                    <div class="input-group mb-2">
-                        <button class="btn btn-lg btn-light w-100 fs-6 ">
+                    <div class="input-group mb-3">
+                        <button class="btn btn-light w-100 fs-6 ">
                             <img src="images/microsoft_logo.png" style="width: 20px" class="me-2" /><small>Sign In with Microsoft</small>
                         </button>
+                    </div>
+                    <div class="input-group mb-2">
+                        <button type="button" onclick="window.location.href = 'register.php';" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;"> Create Account </button>
                     </div>
                 </div>
             </div>
