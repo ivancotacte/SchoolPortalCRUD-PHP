@@ -134,6 +134,9 @@ if(isset($_POST['submit'])){
                 </button>
               </div>
             </form>
+            <div class="input-group mb-2">
+                <button type="button" onclick="window.location.href = 'index.php';" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;"> Back to Login </button>
+            </div>
           </div>
         </div>
       </div>
