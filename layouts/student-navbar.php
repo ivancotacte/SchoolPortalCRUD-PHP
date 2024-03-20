@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent" style="margin-right: 70px;">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="dashboard.php"> Your Profile </a></li>
+          <a class="nav-link" href="student-dashboard.php"> Your Profile </a></li>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="edit_profile.php"> Edit Profile </a></li>
