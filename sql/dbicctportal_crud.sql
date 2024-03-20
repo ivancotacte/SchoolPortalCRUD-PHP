@@ -8,7 +8,9 @@ CREATE TABLE `tb_account` (
   `middle_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `suffix_name` varchar(50) NOT NULL,
+  `course` varchar(50) NOT NULL,
   `campus` varchar(50) NOT NULL,
+  `contact_number` varchar(50) NOT NULL,
   `email_address` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `user_role` varchar(50) NOT NULL DEFAULT 'student',
@@ -16,3 +18,6 @@ CREATE TABLE `tb_account` (
   `created_at` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+INSERT INTO tb_account (first_name, email_address, password, user_role) VALUES ('admin', 'admin@admin.com', 'admin', 'admin');
