@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Redirect to login if ADMIN_EMAIL session is not set
 if (!isset($_SESSION['ADMIN_EMAIL'])) {
     header("Location: index.php");
     die();
@@ -10,9 +9,8 @@ if (!isset($_SESSION['ADMIN_EMAIL'])) {
 include 'config/connect.php';
 
 $msg = "";
-$id = $_GET['id']; // Get student ID from URL
+$id = $_GET['id'];
 
-// Retrieve student information based on ID
 $query = "SELECT * FROM tb_account WHERE id = $id AND user_role = 'student'";
 $result = mysqli_query($conn, $query);
 
@@ -20,7 +18,6 @@ if (!$result) {
     $msg = "<div class='alert alert-danger'>Error</div>";
 }
 
-// If result is retrieved, assign information to variables
 if (mysqli_num_rows($result) == 1) {
     $row = mysqli_fetch_assoc($result);
     $first_name = $row['first_name'];
@@ -28,23 +25,21 @@ if (mysqli_num_rows($result) == 1) {
     $last_name = $row['last_name'];
     $suffix_name = $row['suffix_name'];
     $campus = $row['campus'];
-    $course = $row['course']; // Add this line to retrieve course information
+    $course = $row['course'];
     $email_address = $row['email_address'];
 } else {
     $msg = "<div class='alert alert-danger'>Student not found.</div>";
 }
 
-// Update student information when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $first_name = $_POST['first_name'];
     $middle_name = $_POST['middle_name'];
     $last_name = $_POST['last_name'];
     $suffix_name = $_POST['suffix_name'];
     $campus = $_POST['campus'];
-    $course = $_POST['course']; // Add this line to get course information
+    $course = $_POST['course'];
     $email_address = $_POST['email_address'];
 
-    // Query to update student information
     $update_query = "UPDATE tb_account SET first_name = '$first_name', middle_name = '$middle_name', last_name = '$last_name', suffix_name = '$suffix_name', campus = '$campus', course = '$course', email_address = '$email_address' WHERE id = $id";
 
     if (mysqli_query($conn, $update_query)) {
