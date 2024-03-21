@@ -29,7 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $course = mysqli_real_escape_string($conn, $_POST['course']);
     $contact_number = mysqli_real_escape_string($conn, $_POST['contact_number']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
+
     $password = generateRandomPassword();
+    $password_hash = md5($password);
 
     $image = $_FILES['image']['name'];
     $image_size = $_FILES['image']['size'];
@@ -49,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             move_uploaded_file($image_tmp_name, $image_folder);
             $current_time = date("Y-m-d H:i:s");
-            $sql = "INSERT INTO tb_account (first_name, middle_name, last_name, suffix_name, campus, course, contact_number, email_address, password, image, created_at) VALUES ('{$firstName}', '{$middleName}', '{$lastName}', '{$suffix}', '{$campus}', '{$course}', '{$contact_number}', '{$email}', '{$password}' , '$image', '$current_time')";
+            $sql = "INSERT INTO tb_account (first_name, middle_name, last_name, suffix_name, campus, course, contact_number, email_address, password, image, created_at) VALUES ('{$firstName}', '{$middleName}', '{$lastName}', '{$suffix}', '{$campus}', '{$course}', '{$contact_number}', '{$email}', '{$password_hash}' , '$image', '$current_time')";
             $result = mysqli_query($conn, $sql);
 
             if ($result) {
