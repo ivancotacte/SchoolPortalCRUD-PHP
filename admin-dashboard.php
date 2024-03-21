@@ -75,6 +75,7 @@ if (isset($_POST['delete'])) {
                                 echo "<td>" . $row['email_address'] . "</td>";
                                 echo "<td>" . $row['created_at'] . "</td>";
                                 echo "<td>";
+                                echo "<button class='btn btn-success me-2' onclick='viewProfile(" . $row['id'] . ")'>View</button>";
                                 echo "<button class='btn btn-primary me-2' onclick='editProfile(" . $row['id'] . ")'>Edit</button>";
                                 echo "<button class='btn btn-danger' onclick='deleteAccount(" . $row['id'] . ")'>Delete</button>";
                                 echo "</td>";
@@ -92,15 +93,12 @@ if (isset($_POST['delete'])) {
     <script>
         function deleteAccount(id) {
             if (confirm("Are you sure you want to delete this account?")) {
-                // Send AJAX request to delete account
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == XMLHttpRequest.DONE) {
                         if (xhr.status == 200) {
-                            // Reload the page after successful deletion
                             location.reload();
                         } else {
-                            // Display error message if deletion fails
                             document.getElementById("msg").innerHTML = "Error deleting account: " + xhr.responseText;
                         }
                     }
@@ -113,6 +111,9 @@ if (isset($_POST['delete'])) {
 
         function editProfile(id) {
             window.location.href = "edit_student.php?id=" + id;
+        }
+        function viewProfile(id) {
+        window.location.href = "view_student.php?id=" + id;
         }
     </script>
 
