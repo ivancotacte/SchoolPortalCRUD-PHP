@@ -1,38 +1,10 @@
-
-<?php
-    session_start();
-    
-    if (!isset($_SESSION['SESSION_EMAIL'])) {
-        header("Location: index.php");
-        die();
-    }
-
-    include 'config/connect.php';
-    $msg = "";
-
-    $query = mysqli_query($conn, "SELECT * FROM tb_account WHERE email_address='{$_SESSION['SESSION_EMAIL']}'");
-
-    if (mysqli_num_rows($query) > 0) {
-        $row = mysqli_fetch_assoc($query);
-
-        $_SESSION['first_name'] = $row['first_name'];
-        $_SESSION['middle_name'] = $row['middle_name'];
-        $_SESSION['last_name'] = $row['last_name'];
-        $_SESSION['suffix_name'] = $row['suffix_name'];
-        $_SESSION['campus'] = $row['campus'];
-        $_SESSION['email_address'] = $row['contact_number'];
-        $_SESSION['email_address'] = $row['email_address'];
-        $_SESSION['user_role'] = $row['user_role'];
-    }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <title> Student Dashboard </title>
 </head>
 <style>

@@ -9,8 +9,10 @@ if(isset($_POST['submit'])){
     $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
     $suffix = mysqli_real_escape_string($conn, $_POST['suffix']);
     $campus = mysqli_real_escape_string($conn, $_POST['campus']);
+    $course = mysqli_real_escape_string($conn, $_POST['course']);
+    $contact_number = mysqli_real_escape_string($conn, $_POST['contact_number']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = mysqli_real_escape_string($conn, ($_POST['password']));
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
 
     $image = $_FILES['image']['name'];
     $image_size = $_FILES['image']['size'];
@@ -27,7 +29,8 @@ if(isset($_POST['submit'])){
             $msg = "<div class='alert alert-danger'>Image size must be less than 2mb.</div>";
         } else {
             move_uploaded_file($image_tmp_name, $image_folder);
-            $sql = "INSERT INTO tb_account (first_name, middle_name, last_name, suffix_name, campus, email_address, password, image) VALUES ('{$firstName}', '{$middleName}', '{$lastName}', '{$suffix}', '{$campus}', '{$email}', '{$password}' , '$image')";
+            $current_time = date("Y-m-d H:i:s");
+            $sql = "INSERT INTO tb_account (first_name, middle_name, last_name, suffix_name, campus, course, contact_number, email_address, password, image, created_at) VALUES ('{$firstName}', '{$middleName}', '{$lastName}', '{$suffix}', '{$campus}', '{$course}', '{$contact_number}', '{$email}', '{$password}' , '$image', '$current_time')";
             $result = mysqli_query($conn, $sql);
 
             if($result){
@@ -39,6 +42,7 @@ if(isset($_POST['submit'])){
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,15 +72,15 @@ if(isset($_POST['submit'])){
     </div>
   </div>
 </nav>
-<div class="container d-flex justify-content-center align-items-center"> 
-    <div class="row border rounded-2 p-3 bg-white shadow box-area">
-      <div class="col-md-6 rounded-2 d-flex justify-content-center align-items-center flex-column left-box"
+<div class="container d-flex justify-content-center align-items-center min-vh-100"> 
+    <div class="row border rounded-4 p-3 bg-white shadow box-area">
+      <div class="col-md-5 rounded-4 d-flex justify-content-center align-items-center flex-column left-box"
         style="background: #030067">
         <div class="featured-image mb-3">
           <img src="images/icct_logo.png" class="img-fluid" />
         </div>
       </div>
-      <div class="col-md-6 right-box">
+      <div class="col-md-7 right-box">
         <div class="row align-items-center">
           <div class="header-text mb-4">
             <h2>Student Register</h2>
@@ -91,7 +95,7 @@ if(isset($_POST['submit'])){
               </div>
               <label class="form-label">First Name:</label>
               <div class="input-group mb-2">
-                <input type="text" name="firstName" class="form-control bg-light fs-6" placeholder="Juan" />
+                <input type="text" name="firstName" class="form-control bg-light fs-6" placeholder="Juan" required />
               </div>
               <label class="form-label">Middle Name:</label>
               <div class="input-group mb-2">
@@ -99,11 +103,11 @@ if(isset($_POST['submit'])){
               </div>
               <label class="form-label">Last Name:</label>
               <div class="input-group mb-2">
-                <input type="text" name="lastName" class="form-control bg-light fs-6" placeholder="Dela Cruz" />
+                <input type="text" name="lastName" class="form-control bg-light fs-6" placeholder="Dela Cruz" required />
               </div>
               <label class="form-label">Suffix:</label>
               <div class="input-group mb-2">
-                <select name="suffix" id="suffix" class="form-control bg-light fs-6">
+                <select name="suffix" id="suffix" class="form-select bg-light fs-6">
                   <option value="">Suffix</option>
                   <option value="jr">Jr</option>
                   <option value="sr">Sr</option>
@@ -112,21 +116,40 @@ if(isset($_POST['submit'])){
                   <option value="IV">IV</option>
                 </select>
               </div>
+              <label class="form-label"> Course: </label>
+              <div class="input-group mb-2">
+                <select id="course" name="course" class="form-select bg-light fs-6" required>
+                  <option value=""></option>
+                  <option value="BSIT"> BSIT - Bachelor of Science in Information Technology </option>
+                  <option value="BSCS"> BSCS - Bachelor of Science in Computer Science </option>
+                  <option value="BSCE"> BSCE - Bachelor of Science in Computer Engineering </option>
+                  <option value="BSIS"> BSIS - Bachelor of Science in Information Science </option>
+                  <option value="ABCom"> ABCom - Bachelor of Arts in Communication (Masscom) </option>
+                  <option value="ABEng"> ABEng - Bachelor of Arts in English </option>
+                  <option value="ABPolSci"> ABPolSci - Bachelor of Arts in Political Science </option>
+                  <option value="ABPsych"> ABPsych - Bachelor of Arts in Psychology </option>
+                  <option value="BSM"> BSM - Bachelor of Sciences in Mathematics </option>
+                </select>
+              </div>
               <label class="form-label">Campus:</label>
               <div class="input-group mb-2">
-                <select id="campus" name="campus" class="form-control bg-light fs-6">
+                <select id="campus" name="campus" class="form-select bg-light fs-6" required>
                   <option value="cainta">Cainta (Main)</option>
                   <option value="sanmateo">San Mateo</option>
                   <option value="antipolo">Antipolo</option>
                 </select>
               </div>
+              <label class="form-label"> Contact Number: </label>
+              <div class="input-group mb-2">
+                <input type="number" name="contact_number" class="form-control bg-light fs-6" required />
+              </div>
               <label class="form-label">Email address:</label>
               <div class="input-group mb-2">
-                <input type="email" name="email" class="form-control bg-light fs-6" placeholder="example@example.com" />
+                <input type="email" name="email" class="form-control bg-light fs-6" placeholder="example@example.com" required />
               </div>
               <label class="form-label">Password:</label>
               <div class="input-group mb-3">
-                <input type="password" name="password" class="form-control bg-light fs-6" placeholder="********" />
+                <input type="password" name="password" class="form-control bg-light fs-6" placeholder="********" required />
               </div>
               <div class="input-group mb-2">
                 <button type="submit" name="submit" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;">

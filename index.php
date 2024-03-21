@@ -2,7 +2,13 @@
 session_start();
 
 if (isset($_SESSION['SESSION_EMAIL'])) {
-    header("Location: dashboard.php");
+    $redirect_page = '';
+    if (isset($_SESSION['ADMIN_EMAIL'])) {
+        $redirect_page = "admin-dashboard.php";
+    } else {
+        $redirect_page = "student-dashboard.php";
+    }
+    header("Location: $redirect_page");
     die();
 }
 
@@ -83,11 +89,11 @@ if (isset($_POST['submit'])) {
                     <form action="" method="post">
                         <label class="form-label">Email address / Student ID No.</label>
                         <div class="input-group mb-2">
-                            <input type="email" name="email" class="form-control bg-light fs-6" placeholder="example@example.com" />
+                            <input type="email" name="email" class="form-control bg-light fs-6" placeholder="example@example.com" required />
                         </div>
                         <label class="form-label">Password:</label>
                         <div class="input-group mb-3">
-                            <input type="password" name="password" class="form-control bg-light fs-6" placeholder="********" />
+                            <input type="password" name="password" class="form-control bg-light fs-6" placeholder="********" required />
                         </div>
                         <div class="input-group mb-2">
                             <button type="submit" name="submit" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;">Login</button>

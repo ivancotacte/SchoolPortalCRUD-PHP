@@ -96,8 +96,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php
     include 'layouts/student-navbar.php';
 ?>
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="row border rounded-2 p-3 bg-white shadow box-area">
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row border rounded-4 p-3 bg-white shadow box-area">
         <div class="right-box">
             <h3>Update Profile Information</h3>
             <?php if ($msg): ?>
