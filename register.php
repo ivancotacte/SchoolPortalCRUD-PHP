@@ -12,7 +12,7 @@ if(isset($_POST['submit'])){
     $course = mysqli_real_escape_string($conn, $_POST['course']);
     $contact_number = mysqli_real_escape_string($conn, $_POST['contact_number']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $password = mysqli_real_escape_string($conn, md5($_POST['password']));
 
     $image = $_FILES['image']['name'];
     $image_size = $_FILES['image']['size'];

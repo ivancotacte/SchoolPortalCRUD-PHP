@@ -17,7 +17,7 @@ $msg = "";
 
 if (isset($_POST['submit'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $password = mysqli_real_escape_string($conn, md5($_POST['password']));
 
     $select = "SELECT * FROM tb_account WHERE email_address='{$email}' AND password='{$password}'";
     $result = mysqli_query($conn, $select);

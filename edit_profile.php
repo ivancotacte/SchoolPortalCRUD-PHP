@@ -15,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $suffix_name = $_POST['suffix_name'];
     $contact_number = $_POST['contact_number']; 
 
-    $new_password = mysqli_real_escape_string($conn, ($_POST['new_password']));
-    $confirm_password = mysqli_real_escape_string($conn, ($_POST['confirm_password']));
+    $new_password = mysqli_real_escape_string($conn, md5($_POST['new_password']));
+    $confirm_password = mysqli_real_escape_string($conn, md5($_POST['confirm_password']));
 
     if ($new_password != $confirm_password) {
         $msg = "New password and confirm password do not match";
