@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS dbicctportal_crud;
+CREATE DATABASE dbicctportal_crud;
 
 USE dbicctportal_crud;
 
@@ -18,6 +18,3 @@ CREATE TABLE `tb_account` (
   `created_at` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
-INSERT INTO tb_account (first_name, email_address, password, user_role) VALUES ('admin', 'admin@admin.com', 'admin', 'admin');
