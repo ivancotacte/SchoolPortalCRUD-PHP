@@ -36,11 +36,11 @@
     <title> Student Dashboard </title>
 </head>
 <style>
-    .profile-picture {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-    }
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+        }
 </style>
 <body>
     <?php
@@ -72,17 +72,36 @@
                     if(mysqli_num_rows($select) > 0) {
                         $fetch = mysqli_fetch_assoc($select);
 
+                        echo '<div class="mb-2">';
                         echo '<p>ID: <span>'.$fetch['id'].'</span></p>';
+                        echo '</div>';
+                        echo '<div class="mb-2">';
                         echo '<p>First Name: <span>'.$fetch['first_name'].'</span></p>';
+                        echo '</div>';
+                        echo '<div class="mb-2">';
                         echo '<p>Middle Name: <span>'.$fetch['middle_name'].'</span></p>';
+                        echo '</div>';
+                        echo '<div class="mb-2">';
                         echo '<p>Last Name: <span>'.$fetch['last_name'].'</span></p>';
+                        echo '</div>';
+                        echo '<div class="mb-2">';
                         echo '<p>Suffix: <span>'.$fetch['suffix_name'].'</span></p>';
+                        echo '</div>';
+                        echo '<div class="mb-2">';
                         echo '<p>Campus: <span>'.$fetch['course'].'</span></p>';
+                        echo '</div>';
+                        echo '<div class="mb-2">';
                         echo '<p>Campus: <span>'.$fetch['campus'].'</span></p>';
+                        echo '</div>';
+                        echo '<div class="mb-2">';
                         echo '<p>Contact Number: <span>'.$fetch['contact_number'].'</span></p>';
+                        echo '</div>';
+                        echo '<div class="mb-2">';
                         echo '<p>Email Address: <span>'.$fetch['email_address'].'</span></p>';
+                        echo '</div>';
+                        echo '<div class="mb-2">';
                         echo '<p>Role: <span>'.$fetch['user_role'].'</span></p>';
-                        
+                        echo '</div>';
                     }
                 ?>
                 <div class="mt-3">
