@@ -14,8 +14,6 @@ $msg = "";
 $select = mysqli_query($conn, "SELECT * FROM TBL_ACCOUNT WHERE EMAIL_ADDRESS='{$_SESSION['STUDENT_EMAIL']}'") or die('query failed');
 if(mysqli_num_rows($select) > 0) {
     $row = mysqli_fetch_assoc($select);
-
-    $IMAGE = ($row['IMAGE'] == '') ? './images/avatar/default-avatar.png' : $row['IMAGE'];
     $_SESSION['FIRST_NAME'] = $row['FIRST_NAME'];
     $_SESSION['MIDDLE_NAME'] = $row['MIDDLE_NAME'];
     $_SESSION['LAST_NAME'] = $row['LAST_NAME'];
@@ -30,28 +28,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $suffixName = $_POST['suffixName'];
     $contactNum = $_POST['contactNum'];
 
-    $newPassword = $_POST['newPassword'];
-    $confirmPassword = $_POST['confirmPassword'];
+    $newPassword = md5($_POST['newPassword']);
+    $confirmPassword = md5($_POST['confirmPassword']);
 
-    if (!empty($newPassword) && $newPassword != $confirmPassword) {
+    if ($newPassword != $confirmPassword) {
         $msg = "<div class='alert alert-danger'>Password does not match!</div>";
-    } else {
-        $updateQuery = "UPDATE TBL_ACCOUNT SET FIRST_NAME='{$firstName}', MIDDLE_NAME='{$middleName}', LAST_NAME='{$lastName}', SUFFIX_NAME='{$suffixName}', CONTACT_NUMBER='{$contactNum}'";
+    } else if (!empty($newPassword)) {
+        $update = "UPDATE TBL_ACCOUNT SET FIRST_NAME='{$firstName}', MIDDLE_NAME='{$middleName}', LAST_NAME='{$lastName}', SUFFIX_NAME='{$suffixName}', CONTACT_NUMBER='{$contactNum}', PASSWORD='{$newPassword}' WHERE EMAIL_ADDRESS='{$_SESSION['STUDENT_EMAIL']}'";
 
-        if (!empty($newPassword)) {
-            $updateQuery .= ", PASSWORD='" . md5($newPassword) . "'";
-        }
-
-        $updateQuery .= " WHERE EMAIL_ADDRESS='{$_SESSION['STUDENT_EMAIL']}'";
-
-        if (mysqli_query($conn, $updateQuery)) {
+        if (mysqli_query($conn, $update)) {
             $msg = "<div class='alert alert-success'>Profile updated successfully!</div>";
         } else {
             $msg = "<div class='alert alert-danger'>Failed to update profile!</div>";
         }
+
+    } else {
+        $update = "UPDATE TBL_ACCOUNT SET FIRST_NAME='{$firstName}', MIDDLE_NAME='{$middleName}', LAST_NAME='{$lastName}', SUFFIX_NAME='{$suffixName}', CONTACT_NUMBER='{$contactNum}' WHERE EMAIL_ADDRESS='{$_SESSION['STUDENT_EMAIL']}'";
+
+        if (mysqli_query($conn, $update)) {
+            $msg = "<div class='alert alert-success'>Profile updated successfully!</div>";
+        } else {
+            $msg = "<div class='alert alert-danger'>Failed to update profile!</div>";
+        }
+
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -87,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <?php echo $msg; ?>
                 <form id="myForm" action="" method="post" enctype="multipart/form-data" novalidate>
-                    <img src="<?php echo $IMAGE; ?>" alt="Student Image" class="circular-image mb-5">
+                    <img src="<?php echo $image; ?>" alt="Student Image" class="circular-image mb-5">
                     <label class="form-label">Profile Picture:</label>
                     <div class="input-group mb-2">
                         <input type="file" name="update_image" accept="image/jpg, image/jpeg, image/png" class="form-control box">

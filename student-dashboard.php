@@ -16,7 +16,7 @@ $select = mysqli_query($conn, "SELECT * FROM TBL_ACCOUNT WHERE EMAIL_ADDRESS='{$
 if (mysqli_num_rows($select) > 0) {
     $fetch = mysqli_fetch_assoc($select);
 
-    $image = ($fetch['IMAGE'] == '') ? 'default.png' : $fetch['IMAGE'];
+    $image = ($fetch['IMAGE'] == '') ? './images/avatar/default-avatar.png' : $fetch['IMAGE'];
 
     $ID = $fetch['ID'];
     $STUDENT_NUMBER = $fetch['STUDENT_NUMBER'];

@@ -28,8 +28,11 @@ if(isset($_POST['submit'])){
         $randomNumber = generateRandomNumber();
         $studentNumber = strtoupper($lastName) . $randomNumber;
 
-        $image_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-        $image_folder = 'images/avatar/uploaded_img/' . $studentNumber . '.' . $image_extension;
+    $default_image = 'images/avatar/default-avatar.png';
+    $image = $_FILES['image']['name'];
+    $image_size = $_FILES['image']['size'];
+    $image_tmp_name = $_FILES['image']['tmp_name'];
+    $image_folder = 'images/avatar/uploaded_img/'.$image;
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $msg = "<div class='alert alert-danger'>Invalid email format.</div>";
@@ -139,7 +142,7 @@ if(isset($_POST['submit'])){
                             </div>
                             <label class="form-label"> Contact Number: </label>
                             <div class="input-group mb-2">
-                                <input type="number" name="contact_number" class="form-control bg-light fs-6" required />
+                                <input type="number" name="contact_number" class="form-control bg-light fs-6"/>
                             </div>
                             <label class="form-label">Email address:</label>
                             <div class="input-group mb-2">
