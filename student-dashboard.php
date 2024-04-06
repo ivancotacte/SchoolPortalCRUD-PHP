@@ -43,7 +43,6 @@ if (mysqli_num_rows($select) > 0) {
     $EMAIL_ADDRESS = $fetch['EMAIL_ADDRESS'];
     $USER_ROLE = ucwords($fetch['USER_ROLE']);
 }
-
 ?>
 
 <!DOCTYPE html>
