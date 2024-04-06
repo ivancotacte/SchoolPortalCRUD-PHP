@@ -4,6 +4,7 @@ function generateRandomNumber() {
 }
 
 include 'config/connect.php';
+include 'layouts/HOME_NAVBAR.php';
 
 $msg = "";
 
@@ -70,7 +71,6 @@ if(isset($_POST['submit'])){
     <title>Register</title>
 </head>
 <body>
-    <?php include 'layouts/HOME_NAVBAR.php'; ?>
     <div class="container d-flex justify-content-center align-items-center min-vh-100"> 
         <div class="row border rounded-4 p-3 bg-white shadow box-area">
             <div class="col-md-5 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style="background: #030067">
