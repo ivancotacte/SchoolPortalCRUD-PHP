@@ -11,6 +11,7 @@ include 'layouts/STUDENT_NAVBAR.php';
 
 $msg = "";
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
