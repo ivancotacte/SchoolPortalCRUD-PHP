@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -6,40 +5,51 @@ if (isset($_SESSION['SESSION_EMAIL'])) {
     $redirect_page = '';
     if (isset($_SESSION['ADMIN_EMAIL'])) {
         $redirect_page = "admin-dashboard.php";
-    } else {
+    } else if (isset($_SESSION['STUDENT_EMAIL'])) {
         $redirect_page = "student-dashboard.php";
+    } else if (isset($_SESSION['OWNER_EMAIL'])) {
+        $redirect_page = "owner-dashboard.php";
     }
     header("Location: $redirect_page");
     die();
 }
 
 include 'config/connect.php';
+
 $msg = "";
 
 if (isset($_POST['submit'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, md5($_POST['password']));
 
-    $select = "SELECT * FROM tb_account WHERE email_address='{$email}' AND password='{$password}'";
+    $select = "SELECT * FROM TBL_ACCOUNT WHERE EMAIL_ADDRESS='{$email}' AND PASSWORD='{$password}'";
     $result = mysqli_query($conn, $select);
 
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
 
-        if ($row['user_role'] == 'admin') {
-            $_SESSION['ADMIN_EMAIL'] = $row['email_address'];
+        $_SESSION['SESSION_EMAIL'] = $row['EMAIL_ADDRESS'];
+        $_SESSION['SESSION_ID'] = $row['ID'];
+
+        if ($row['USER_ROLE'] == 'admin') {
+            $_SESSION['ADMIN_EMAIL'] = $row['EMAIL_ADDRESS'];
+            $_SESSION['SESSION_ID'] = $row['ID'];
             header("Location: admin-dashboard.php");
             exit();
-        } else if ($row['user_role'] == 'student') {
-            $_SESSION['SESSION_EMAIL'] = $row['email_address'];
-            $_SESSION['SESSION_ID'] = $row['id'];
+        } else if ($row['USER_ROLE'] == 'owner') {
+            $_SESSION['OWNER_EMAIL'] = $row['EMAIL_ADDRESS'];
+            $_SESSION['SESSION_ID'] = $row['ID'];
+            header("Location: owner-dashboard.php");
+            exit();
+        } else if ($row['USER_ROLE'] == 'student') {
+            $_SESSION['STUDENT_EMAIL'] = $row['EMAIL_ADDRESS'];
+            $_SESSION['SESSION_ID'] = $row['ID'];
             header("Location: student-dashboard.php");
             exit();
         }
     } else {
         $msg = "<div class='alert alert-danger'>Invalid email or password.</div>";
     }
-    
 }
 ?>
 
@@ -51,11 +61,11 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
-    <title> Login </title>
+    <title>Login</title>
 </head>
 
 <body>
-<?php include 'layouts/HOME_NAVBAR.php'; ?>
+    <?php include 'layouts/HOME_NAVBAR.php'; ?>
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="row border rounded-4 p-3 bg-white shadow box-area">
             <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style="background: #030067">
@@ -103,4 +113,5 @@ if (isset($_POST['submit'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
+
 </html>
