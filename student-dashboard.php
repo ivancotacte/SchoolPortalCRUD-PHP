@@ -110,7 +110,10 @@ if (mysqli_num_rows($select) > 0) {
                     <p><strong>User Role:</strong> <?php echo $USER_ROLE; ?></p>
                 </div>
 
-                <div class="input-group mb-3">
+                <div class="input-group mb-2">
+                    <button type="button" onclick="window.location.href = 'student-edit.php';" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;"> Edit Profile </button>
+                </div>
+                <div class="input-group mb-2">
                     <button type="button" onclick="window.location.href = 'logout.php';" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;"> Logout </button>
                 </div>
             </div>
