@@ -75,8 +75,6 @@ if (isset($_POST['submit'])) {
             $subject = "Account Registration";
             $message = "Your account has been successfully created. Here are your login credentials:\n\nStudent Number: $studentNumber\nEmail: $email\nPassword: $password\n\nPlease keep this information secure. If you receive this email, please change your password.";
             sendEmail($email, $subject, $message);
-
-            $msg = "<div class='alert alert-success'>Student has been added successfully.</div>";
     }
 }
 
