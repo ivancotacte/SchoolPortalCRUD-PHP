@@ -29,25 +29,15 @@ if (isset($_POST['submit'])) {
     $campus = $_POST['campus'];
     $contactNum = $_POST['contactNum'];
     $email = $_POST['email'];
-    $password = $_POST['password'];
-    $confirmPassword = $_POST['confirmPassword'];
 
-    if ($password !== $confirmPassword) {
-        $msg = "<div class='alert alert-danger' role='alert'>Passwords do not match.</div>";
+    $stmt = $conn->prepare("SELECT * FROM TBL_ACCOUNT WHERE EMAIL_ADDRESS = :email");
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($result) {
+        $msg = "<div class='alert alert-danger' role='alert'>Email address already exists.</div>";
     } else {
-        $randomNumber = generateRandomNumber();
-        $studentNumber = strtoupper($lastName) . $randomNumber;
-
-        $current_time = date("Y-m-d H:i:s");
-
-        $stmt = $conn->prepare("SELECT * FROM TBL_ACCOUNT WHERE EMAIL_ADDRESS = :email");
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($result) {
-            $msg = "<div class='alert alert-danger' role='alert'>Email address already exists.</div>";
-        } else {
             if ($_FILES['image']['size'] == 0 || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
                 $defaultImage = "images/avatar/default-avatar.png";
                 $image = $defaultImage;
@@ -59,7 +49,13 @@ if (isset($_POST['submit'])) {
                 move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath);
                 $image = $imagePath;
             }
+            $password = generateRandomPassword();
             $hashedPassword = md5($password);
+
+            $randomNumber = generateRandomNumber();
+            $studentNumber = strtoupper($lastName) . $randomNumber;
+
+            $current_time = date("Y-m-d H:i:s");
 
             $stmt = $conn->prepare("INSERT INTO TBL_ACCOUNT (STUDENT_NUMBER, FIRST_NAME, MIDDLE_NAME, LAST_NAME, SUFFIX_NAME, COURSE, CAMPUS, CONTACT_NUMBER, EMAIL_ADDRESS, PASSWORD, IMAGE, CREATED_AT) VALUES (:studentNumber, :firstName, :middleName, :lastName, :suffix, :course, :campus, :contactNum, :email, :hashedPassword, :profilePicture, :created_at)");
             $stmt->bindParam(':studentNumber', $studentNumber);
@@ -76,8 +72,38 @@ if (isset($_POST['submit'])) {
             $stmt->bindParam(':created_at', $current_time);
             $stmt->execute();
 
-            $msg = "<div class='alert alert-success' role='alert'>Account successfully created.</div>";
-        }
+            $subject = "Account Registration";
+            $message = "Your account has been successfully created. Here are your login credentials:\n\nStudent Number: $studentNumber\nEmail: $email\nPassword: $password\n\nPlease keep this information secure. If you receive this email, please change your password.";
+            sendEmail($email, $subject, $message);
+
+            $msg = "<div class='alert alert-success'>Student has been added successfully.</div>";
+    }
+}
+
+function sendEmail($to, $subject, $message) {
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $_ENV['GMAIL_EMAIL'];
+        $mail->Password   = $_ENV['GMAIL_PASSWORD'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+
+        $mail->setFrom('cotactearmenion@gmail.com', 'GROUP 10 - LFSA322N002');
+        $mail->addAddress($to);
+
+        $mail->isHTML(false);
+        $mail->Subject = $subject;
+        $mail->Body    = $message;
+
+        $mail->send();
+        
+        $msg = "<div class='alert alert-success'>Student has been added successfully.</div>";
+    } catch (Exception $e) {
+        $msg = "<div class='alert alert-danger'>An error occurred while sending the email.</div>";
     }
 }
 
@@ -85,7 +111,17 @@ function generateRandomNumber() {
     return str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
 }
 
+function generateRandomPassword($length = 8) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $password = '';
+    for ($i = 0; $i < $length; $i++) {
+        $password .= $characters[rand(0, strlen($characters) - 1)];
+    }
+    return $password;
+}
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -182,18 +218,9 @@ function generateRandomNumber() {
                             <div class="invalid-feedback">Please enter a valid 11-digit phone number.</div>
                         </div>
                         <label class="form-label">Email address:</label>
-                        <div class="input-group mb-2">
+                        <div class="input-group mb-3">
                             <input type="email" name="email" class="form-control bg-light fs-6" placeholder="example@example.com" required />
                             <div class="invalid-feedback">Please enter a valid email address.</div>
-                        </div>
-                        <label class="form-label">Password:</label>
-                        <div class="input-group mb-2">
-                            <input type="password" name="password" class="form-control bg-light fs-6" placeholder="********" required />
-                            <div class="invalid-feedback">Please enter your password.</div>
-                        </div>
-                        <label class="form-label">Confirm Password:</label>
-                        <div class="input-group mb-3">
-                            <input type="password" name="confirmPassword" class="form-control bg-light fs-6" placeholder="********" required />
                         </div>
                         <div class="input-group mb-2">
                             <button type="submit" name="submit" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;">Submit</button>
