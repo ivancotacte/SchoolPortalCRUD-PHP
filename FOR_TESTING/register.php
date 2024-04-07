@@ -1,76 +1,3 @@
-<?php
-function generateRandomNumber() {
-    return str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
-}
-
-include 'config/connect.php';
-include 'layouts/HOME_NAVBAR.php';
-
-$msg = "";
-
-if (isset($_POST['submit'])) {
-    $firstName = $_POST['firstName'];
-    $middleName = $_POST['middleName'];
-    $lastName = $_POST['lastName'];
-    $suffix = $_POST['suffix'];
-    $course = $_POST['course'];
-    $campus = $_POST['campus'];
-    $contactNum = $_POST['contactNum'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $confirmPassword = $_POST['confirmPassword'];
-
-    if ($password !== $confirmPassword) {
-        $msg = "<div class='alert alert-danger' role='alert'>Passwords do not match.</div>";
-    } else {
-        $randomNumber = generateRandomNumber();
-        $studentNumber = strtoupper($lastName) . $randomNumber;
-
-        $current_time = date("Y-m-d H:i:s");
-
-        $stmt = $conn->prepare("SELECT * FROM TBL_ACCOUNT WHERE EMAIL_ADDRESS = :email");
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($result) {
-            $msg = "<div class='alert alert-danger' role='alert'>Email address already exists.</div>";
-        } else {
-            if ($_FILES['image']['size'] == 0 || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
-                $defaultImage = "images/avatar/default-avatar.png";
-                $image = $defaultImage;
-            } else {
-                $imageFolder = "images/avatar/uploaded_img/"; 
-                $imageExtension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-                $imageName = $studentNumber . '.' . $imageExtension;
-                $imagePath = $imageFolder . $imageName;
-                move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath);
-                $image = $imagePath;
-            }
-            $hashedPassword = md5($password);
-
-            $stmt = $conn->prepare("INSERT INTO TBL_ACCOUNT (STUDENT_NUMBER, FIRST_NAME, MIDDLE_NAME, LAST_NAME, SUFFIX_NAME, COURSE, CAMPUS, CONTACT_NUMBER, EMAIL_ADDRESS, PASSWORD, IMAGE, CREATED_AT) VALUES (:studentNumber, :firstName, :middleName, :lastName, :suffix, :course, :campus, :contactNum, :email, :hashedPassword, :profilePicture, :created_at)");
-            $stmt->bindParam(':studentNumber', $studentNumber);
-            $stmt->bindParam(':firstName', $firstName);
-            $stmt->bindParam(':middleName', $middleName);
-            $stmt->bindParam(':lastName', $lastName);
-            $stmt->bindParam(':suffix', $suffix);
-            $stmt->bindParam(':course', $course);
-            $stmt->bindParam(':campus', $campus);
-            $stmt->bindParam(':contactNum', $contactNum);
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':hashedPassword', $hashedPassword);
-            $stmt->bindParam(':profilePicture', $image);
-            $stmt->bindParam(':created_at', $current_time);
-            $stmt->execute();
-
-            $msg = "<div class='alert alert-success' role='alert'>Account successfully created.</div>";
-        }
-    }
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,14 +5,14 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="row border rounded-4 p-3 bg-white shadow box-area">
             <div class="col-md-5 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style="background: #030067">
                 <div class="featured-image mb-3">
-                    <img src="images/icct_logo.png" class="img-fluid" />
+                    <img src="../images/icct_logo.png" class="img-fluid" />
                 </div>
             </div>
             <div class="col-md-7 right-box">
@@ -94,12 +21,7 @@ if (isset($_POST['submit'])) {
                         <h2>Student Register</h2>
                         <p>To register ICCT Portal, please make sure you meet the following requirements:</p>
                     </div>
-                    <?php echo $msg; ?>
-                    <form id="myForm" action="" method="post" novalidate enctype="multipart/form-data">
-                        <label class="form-label">Profile Picture:</label>
-                        <div class="input-group mb-2">
-                            <input type="file" name="image" class="form-control bg-light fs-6" accept="image/jpg, image/jpeg, image/png" />
-                        </div>
+                    <form id="myForm" action="" method="post" novalidate>
                         <label class="form-label">First Name:</label>
                         <div class="input-group mb-2">
                             <input type="text" name="firstName" class="form-control bg-light fs-6" placeholder="Juan" required />
@@ -139,19 +61,17 @@ if (isset($_POST['submit'])) {
                                 <option value="ABPsych">ABPsych - Bachelor of Arts in Psychology</option>
                                 <option value="BSM">BSM - Bachelor of Sciences in Mathematics</option>
                             </select>
-                            <div class="invalid-feedback">Please select your course.</div>
                         </div>
                         <label class="form-label">Campus:</label>
                         <div class="input-group mb-2">
                             <select name="campus" id="campus" class="form-select bg-light fs-6" required>
                                 <option value="">Select campus</option>
-                                <option value="cainta">Cainta (Main)</option>
-                                <option value="cubao">Cubao</option>
-                                <option value="sanmateo">San Mateo</option>
-                                <option value="antipolo">Antipolo</option>
-                                <option value="binangonan">Binangonan</option>
+                                <option value="Cainta">Cainta (Main)</option>
+                                <option value="Cubao">Cubao</option>
+                                <option value="San Mateo">San Mateo</option>
+                                <option value="Antipolo">Antipolo</option>
+                                <option value="Binangonan">Binangonan</option>
                             </select>
-                            <div class="invalid-feedback">Please select your campus.</div>
                         </div>  
                         <label class="form-label">Contact Number:</label>
                         <div class="input-group mb-2">
@@ -161,12 +81,10 @@ if (isset($_POST['submit'])) {
                         <label class="form-label">Email address:</label>
                         <div class="input-group mb-2">
                             <input type="email" name="email" class="form-control bg-light fs-6" placeholder="example@example.com" required />
-                            <div class="invalid-feedback">Please enter a valid email address.</div>
                         </div>
                         <label class="form-label">Password:</label>
                         <div class="input-group mb-2">
                             <input type="password" name="password" class="form-control bg-light fs-6" placeholder="********" required />
-                            <div class="invalid-feedback">Please enter your password.</div>
                         </div>
                         <label class="form-label">Confirm Password:</label>
                         <div class="input-group mb-3">
@@ -176,9 +94,6 @@ if (isset($_POST['submit'])) {
                             <button type="submit" name="submit" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;">
                                 Submit
                             </button>
-                        </div>
-                        <div class="input-group mb-2">
-                            <button type="button" onclick="window.location.href = 'login.php';" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;"> Back to Login </button>
                         </div>
                     </form>
                 </div>
@@ -201,14 +116,6 @@ if (isset($_POST['submit'])) {
                 phoneInput.setCustomValidity("Please enter a valid 11-digit phone number.");
             } else {
                 phoneInput.setCustomValidity("");
-            }
-
-            let passwordInput = document.getElementsByName("password")[0];
-            let confirmPasswordInput = document.getElementsByName("confirmPassword")[0];
-            if (passwordInput.value !== confirmPasswordInput.value) {
-                confirmPasswordInput.setCustomValidity("Passwords do not match.");
-            } else {
-                confirmPasswordInput.setCustomValidity("");
             }
 
             form.classList.add('was-validated');

@@ -16,18 +16,16 @@ $stmt->execute([$_SESSION['STUDENT_EMAIL']]);
 $result = $stmt->fetch();
 
 if ($result) {
-
-    $_SESSION['IMAGE'] = $result['IMAGE'];
     $_SESSION['STUDENT_NUMBER'] = $result['STUDENT_NUMBER'];
-    $_SESSION['FIRST_NAME'] = ucwords($result['FIRST_NAME']);
-    $_SESSION['MIDDLE_NAME'] = ucwords($result['MIDDLE_NAME']);
-    $_SESSION['LAST_NAME'] = ucwords($result['LAST_NAME']);
-    $_SESSION['SUFFIX_NAME'] = ucwords($result['SUFFIX_NAME']);
+    $_SESSION['FIRST_NAME'] = $result['FIRST_NAME'];
+    $_SESSION['MIDDLE_NAME'] = $result['MIDDLE_NAME'];
+    $_SESSION['LAST_NAME'] = $result['LAST_NAME'];  
+    $_SESSION['SUFFIX_NAME'] = $result['SUFFIX_NAME'];
     $_SESSION['COURSE'] = $result['COURSE'];
 
     switch ($result['CAMPUS']) {
         case 'sanmateo':
-            $_SESSION['CAMPUS'] = 'San Mateo'; 
+            $_SESSION['CAMPUS'] = 'San Mateo';
             break;
         case 'antipolo':
             $_SESSION['CAMPUS'] = 'Antipolo';  
@@ -35,17 +33,11 @@ if ($result) {
         case 'cainta':
             $_SESSION['CAMPUS'] = 'Cainta';
             break;
-        case 'cubao': 
-            $_SESSION['CAMPUS'] = 'Cubao';
-            break;  
-        case 'binangonan':
-            $_SESSION['CAMPUS'] = 'Binangonan';
-            break;
     }
-    
+
     $_SESSION['CONTACT_NUMBER'] = $result['CONTACT_NUMBER'];
     $_SESSION['EMAIL_ADDRESS'] = $result['EMAIL_ADDRESS'];
-    $_SESSION['USER_ROLE'] = ucwords($result['USER_ROLE']);
+    $_SESSION['USER_ROLE'] = $result['USER_ROLE'];
 } 
 ?>
 
@@ -81,7 +73,7 @@ if ($result) {
                 <div class="header-text mb-4">
                     <h3>Personal Information</h3>
                 </div>
-                <img src="<?php echo $_SESSION['IMAGE']; ?>" alt="Student Image" class="circular-image mb-5">
+                <img src="<?php echo $image; ?>" alt="Student Image" class="circular-image mb-5">
 
                 <div class="mb-1">
                     <p><strong>Student Number:</strong> <?php echo $_SESSION['STUDENT_NUMBER']; ?></p>
@@ -113,6 +105,8 @@ if ($result) {
                 <div class="mb-3">
                     <p><strong>User Role:</strong> <?php echo $_SESSION['USER_ROLE']; ?></p>
                 </div>
+
+
                 <div class="input-group mb-2">
                     <button type="button" onclick="window.location.href = 'student-edit.php';" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;"> Edit Profile </button>
                 </div>

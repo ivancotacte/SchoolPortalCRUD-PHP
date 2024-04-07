@@ -11,10 +11,11 @@ $username = $_ENV['DATABASE_USER'];
 $password = $_ENV['DATABASE_PASSWORD'];
 $dbname = $_ENV['DATABASE_NAME'];
 
-$conn = mysqli_connect($servername, $username, $password, $dbname);
-
-if (!$conn) {
-    echo "Connection Failed";
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
 }
 
 ?>

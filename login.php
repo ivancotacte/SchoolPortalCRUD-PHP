@@ -20,36 +20,35 @@ include 'layouts/HOME_NAVBAR.php';
 $msg = "";
 
 if (isset($_POST['submit'])) {
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = mysqli_real_escape_string($conn, md5($_POST['password']));
+    $email = $_POST['email'];
+    $password = md5($_POST['password']);
 
-    $select = "SELECT * FROM TBL_ACCOUNT WHERE EMAIL_ADDRESS='{$email}' AND PASSWORD='{$password}'";
-    $result = mysqli_query($conn, $select);
+    $stmt = $conn->prepare("SELECT * FROM TBL_ACCOUNT WHERE EMAIL_ADDRESS = :email AND PASSWORD = :password");
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':password', $password);
+    $stmt->execute();
+    $result = $stmt->fetch();
 
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
+    if ($result) {
+        $_SESSION['SESSION_EMAIL'] = $result['EMAIL_ADDRESS'];
+        $_SESSION['SESSION_ID'] = $result['ID'];
 
-        $_SESSION['SESSION_EMAIL'] = $row['EMAIL_ADDRESS'];
-        $_SESSION['SESSION_ID'] = $row['ID'];
-
-        if ($row['USER_ROLE'] == 'admin') {
-            $_SESSION['ADMIN_EMAIL'] = $row['EMAIL_ADDRESS'];
-            $_SESSION['SESSION_ID'] = $row['ID'];
+        if ($result['USER_ROLE'] == 'admin') {
+            $_SESSION['ADMIN_EMAIL'] = $result['EMAIL_ADDRESS'];
             header("Location: admin-dashboard.php");
             exit();
-        } else if ($row['USER_ROLE'] == 'owner') {
-            $_SESSION['OWNER_EMAIL'] = $row['EMAIL_ADDRESS'];
-            $_SESSION['SESSION_ID'] = $row['ID'];
+        } else if ($result['USER_ROLE'] == 'owner') {
+            $_SESSION['OWNER_EMAIL'] = $result['EMAIL_ADDRESS'];
             header("Location: owner-dashboard.php");
             exit();
-        } else if ($row['USER_ROLE'] == 'student') {
-            $_SESSION['STUDENT_EMAIL'] = $row['EMAIL_ADDRESS'];
-            $_SESSION['SESSION_ID'] = $row['ID'];
+        } else if ($result['USER_ROLE'] == 'student') {
+            $_SESSION['STUDENT_EMAIL'] = $result['EMAIL_ADDRESS'];
             header("Location: student-dashboard.php");
             exit();
         }
+
     } else {
-        $msg = "<div class='alert alert-danger'>Invalid email or password.</div>";
+        $msg = "<div class='alert alert-danger' role='alert'>Invalid email or password</div>";
     }
 }
 ?>
