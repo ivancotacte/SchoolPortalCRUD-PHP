@@ -1,13 +1,18 @@
 <?php
 session_start();
 
+require_once realpath(__DIR__ . "/vendor/autoload.php");
+use Dotenv\Dotenv;
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 if (!isset($_SESSION['OWNER_EMAIL'])) {
     header("Location: index.php");
     die();
-} else if (isset($_SESSION['ADMIN_EMAIL'])) {
-    header("Location: admin-dashboard.php");
+} else if (!isset($_SESSION['ADMIN_EMAIL'])) {
+    header("Location: index.php");
     die();
-} 
+}
 
 include 'config/connect.php';
 include 'layouts/OWNER_NAVBAR.php'; 
@@ -15,8 +20,8 @@ include 'layouts/OWNER_NAVBAR.php';
 $msg = "";
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+
 
 require 'vendor/autoload.php';
 
@@ -75,6 +80,8 @@ if (isset($_POST['submit'])) {
             $subject = "Account Registration";
             $message = "Your account has been successfully created. Here are your login credentials:\n\nStudent Number: $studentNumber\nEmail: $email\nPassword: $password\n\nPlease keep this information secure. If you receive this email, please change your password.";
             sendEmail($email, $subject, $message);
+
+            $msg = "<div class='alert alert-success'>Student has been added successfully.</div>";
     }
 }
 
@@ -224,7 +231,7 @@ function generateRandomPassword($length = 8) {
                             <button type="submit" name="submit" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;">Submit</button>
                         </div>
                         <div class="input-group mb-2">
-                            <button type="button" onclick="window.location.href = 'student-dashboard.php';" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;">Back</button>
+                            <button type="button" onclick="window.location.href = 'owner-dashboard.php';" class="btn btn-lg w-100 fs-6" style="background-color: #030067; color: #ececec;">Back</button>
                         </div>
                 </div>
             </div>
